@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>a simple job search engine</title>
+<link rel="stylesheet" href="static/main.css">
+<link rel="icon" href="static/favicon/favicon-16.png" sizes="16x16">
+<link rel="icon" href="static/favicon/favicon-32.png" sizes="32x32">
+<link rel="icon" href="static/favicon/favicon-128.png" sizes="128x128">
+<link rel="icon" href="static/favicon/favicon-180.png" sizes="180x180">
+<link rel="icon" href="static/favicon/favicon-192.png" sizes="192x192">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+  
+
+
+
+<div class="results_site_title">
+  <a style = "text-decoration: none; color: rgb(91, 184, 241); font-size: 30px;" href="/">a simple job search engine</a>
+</div>  
+
+
+<div class="form">
+<input type="text" class="jobtitle" id="job" value="{{ query }}">
+<input type="text" class="placename" id="location" value="{{ loc }}">
+<select class = "site" id="dropdown">
+  {% if site == "indeed" %}
+  <option value="indeed" selected>indeed</option>
+  <option value="seek">seek</option>
+  <option value="trademe">trademe</option>
+  {% elif site == "seek" %}
+  <option value="seek" selected>seek</option>
+  <option value="indeed">indeed</option>
+  <option value="trademe">trademe</option>
+  {% elif site == "trademe" %}
+  <option value="trademe" selected>trademe</option>
+  <option value="indeed">indeed</option>
+  <option value="seek">seek</option>
+  {% endif %}
+</select>
+<br>
+<br>
+<br>
+<button id="btn" class="button_left" type="submit" >Search</button>
+
+</div>
+
+
+
+<br>
+
+
+{% if error_text %}
+<div class="error_text">{{ error_text}}</div>
+<br>
+
+{% else %}
+<div class = "job_counts">{{ job_counts }} jobs found on {{ site }}</div>
+<br>
+
+
+<br>
+
+
+
+
+<div id="results">
+
+  {% for result in search_results %}
+    <div class='result_styles'>
+        <div class="r_title" >
+          <a href="{{ result.0 }}" target="_blank">{{ result.1 }}</a>
+          </div>
+        <div class="r_location" >{{ result.5 }}</div> 
+        
+        <div class="r_time" >Listed {{ result.4 }}</div>
+        
+        <div style = 'font-style:oblique;' class="r_company" >{{ result.3 }}</div> 
+        <div class="r_desc" >"{{result.2 }}"</div>
+      </div>
+    {% endfor %}
+  
+  {% endif %}
+  
+</div>
+
+
+ 
+<div class = "about" >
+  <a style = "text-decoration: none; color: rgb(91, 184, 241)" href="/about">About</a>
+</div>
+<div class = 'all_pages'>
+  {% if prev_page %}
+  <div class = "prev_page">
+      {% for p in prev_page %}
+        <a style="color:rgb(91, 184, 241);" href="{{ site }}?job={{ query }}&location={{ loc }}&page={{ p.0 }}">Prev</a>
+      {% endfor %}
+  </div>
+  {% endif %}
+  
+  <div class = "page_number">
+      {% for page in search_pages %}
+        <a style="color:rgb(91, 184, 241);" href="{{ site }}?job={{ query }}&location={{ loc }}&page={{ page.0 }}">{{ page.1 }}</a>
+      {% endfor %}
+    </div>
+
+  {% if next_page %}
+  <div class = "next_page">
+      {% for n in next_page %}
+        <a style="color:rgb(91, 184, 241);" href="{{ site }}?job={{ query }}&location={{ loc }}&page={{ n.0 }}">Next</a>
+      {% endfor %}
+  </div>
+  {% endif %}
+  
+</div>
+
+  
+</body>
+<script src="static/home.js"></script>
