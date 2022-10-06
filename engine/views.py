@@ -26,6 +26,7 @@ def seek(request):
     w = str(query)
     p = str(page_num)
     l = str(loc)
+    L = l.capitalize
     url = "https://www.seek.co.nz/" + w + "-jobs" + "/in-" + l  + "?page=" + p + "&sortmode=ListedDate"
     
     error_text = "no results found on seek"
@@ -78,17 +79,16 @@ def seek(request):
                     if t != None:
                         global job_time
                         job_time = t.text
-                    l = a.find("div", class_='yvsb870 _14uh994r _14uh994e2 _14uh994b2 _14uh9944u _14uh994ei').find("span", class_="yvsb870 _14uh9945e _14uh9940 k7nppw0")
+                    '''l = a.find("span", class_="yvsb870 _14uh9944u _1qw3t4i0 _1qw3t4i1x _1qw3t4i1 _1d0g9qk4 _1qw3t4i8")
                     if l != None:
-                        l1 = l.text.split('location: ')
                         global job_location
-                        job_location = l1[1]
+                        job_location = l.text'''
                     s = a.find("div", class_="yvsb870 _14uh9948z")#.find("span", class_="yvsb870 _14uh9944u _1qw3t4i0 _1qw3t4i1y _1qw3t4i1 _1d0g9qk4 _1qw3t4i8")find("div", class_="yvsb870 v8nw070 v8nw072").find("div", class_="yvsb870 _14uh99466").
                     if s != None:
                         global job_shortdesc
                         job_shortdesc = s.text
                     
-                    search_results.append((job_url,job_title,job_shortdesc,job_company,job_time,job_location))
+                    search_results.append((job_url,job_title,job_shortdesc,job_company,job_time,L))
                 
 
             search_pages = []

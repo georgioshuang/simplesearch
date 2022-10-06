@@ -118,8 +118,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/')]
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    'static',
+)
+STATICFILES_DIRS = [os.path.join(BASE_DIR, '/engine/static')]
 
 LOGGING = {
     'version': 1,
@@ -128,7 +131,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/Users/hai/Desktop/project2/python_search_engine/engine/logs/debug.log',
+            'filename': './debug.log',
         },
     },
     'loggers': {
