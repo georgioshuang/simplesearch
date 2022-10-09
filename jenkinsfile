@@ -1,3 +1,5 @@
-pipeline{
-    agent {dockerfile true}
+pipeline {
+    agent { dockerfile true }
+    stages {
+    }
 }
