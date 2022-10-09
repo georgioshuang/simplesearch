@@ -11,6 +11,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 
+
+
+
 def query(request):
     return render(request, 'engine/home.html')
 
@@ -26,11 +29,11 @@ def seek(request):
     w = str(query)
     p = str(page_num)
     l = str(loc)
+    L = l.capitalize
     url = "https://www.seek.co.nz/" + w + "-jobs" + "/in-" + l  + "?page=" + p + "&sortmode=ListedDate"
     
     error_text = "no results found on seek"
     try:
-
         chromeoptions = Options()
         chromeoptions.headless = True  # hide GUI
         chromeoptions.add_argument("--window-size=1920,1200")
@@ -38,6 +41,11 @@ def seek(request):
         chromeoptions.add_argument("--disable-gpu")
         chromeoptions.add_argument("--no-sandbox")
         chromeoptions.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+        chromeoptions.add_argument("--disable-infobars")
+        chromeoptions.add_argument("--disable-browser-side-navigation")
+        chromeoptions.add_argument("--ignore-certificate-errors")
+        chromeoptions.add_argument('--disable-dev-shm-usage')  
+
         driver = webdriver.Chrome(options=chromeoptions)
         driver.get(url)
         
@@ -78,17 +86,16 @@ def seek(request):
                     if t != None:
                         global job_time
                         job_time = t.text
-                    l = a.find("div", class_='yvsb870 _14uh994r _14uh994e2 _14uh994b2 _14uh9944u _14uh994ei').find("span", class_="yvsb870 _14uh9945e _14uh9940 k7nppw0")
+                    '''l = a.find("span", class_="yvsb870 _14uh9944u _1qw3t4i0 _1qw3t4i1x _1qw3t4i1 _1d0g9qk4 _1qw3t4i8")
                     if l != None:
-                        l1 = l.text.split('location: ')
                         global job_location
-                        job_location = l1[1]
+                        job_location = l.text'''
                     s = a.find("div", class_="yvsb870 _14uh9948z")#.find("span", class_="yvsb870 _14uh9944u _1qw3t4i0 _1qw3t4i1y _1qw3t4i1 _1d0g9qk4 _1qw3t4i8")find("div", class_="yvsb870 v8nw070 v8nw072").find("div", class_="yvsb870 _14uh99466").
                     if s != None:
                         global job_shortdesc
                         job_shortdesc = s.text
                     
-                    search_results.append((job_url,job_title,job_shortdesc,job_company,job_time,job_location))
+                    search_results.append((job_url,job_title,job_shortdesc,job_company,job_time,L))
                 
 
             search_pages = []
@@ -160,8 +167,12 @@ def indeed(request):
         chromeoptions.add_argument("--disable-infobars")
         chromeoptions.add_argument("--disable-browser-side-navigation")
         chromeoptions.add_argument("--ignore-certificate-errors")
+        chromeoptions.add_argument('--disable-dev-shm-usage')   
+        
+
         driver = webdriver.Chrome(options=chromeoptions)
         driver.get(url)
+        
     
             # wait for page to load
         element = WebDriverWait(driver=driver, timeout=10).until(
@@ -262,7 +273,7 @@ def trademe(request):
     url = "https://www.trademe.co.nz/a/jobs/" + l + "/search?search_string=" + w + "&sort_order=expirydesc" + "&page=" + p
     error_text = "no results found on trademe"
     try:
-        # configure webdriver
+        
         chromeoptions = Options()
         chromeoptions.headless = True  # hide GUI
         chromeoptions.add_argument("--window-size=1920,1200")
@@ -270,9 +281,13 @@ def trademe(request):
         chromeoptions.add_argument("--disable-gpu")
         chromeoptions.add_argument("--no-sandbox")
         chromeoptions.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+        chromeoptions.add_argument("--disable-infobars")
+        chromeoptions.add_argument("--disable-browser-side-navigation")
+        chromeoptions.add_argument("--ignore-certificate-errors")
+        chromeoptions.add_argument('--disable-dev-shm-usage')   
         driver = webdriver.Chrome(options=chromeoptions)
-        
         driver.get(url)
+        
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         response = requests.get(url)
         
