@@ -1,5 +1,4 @@
-#FROM ubuntu:22.04
-FROM alpine
+FROM ubuntu:22.04
 
 RUN apt -y update \
 	&& apt -y upgrade \
