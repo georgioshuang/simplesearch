@@ -1,8 +1,7 @@
-FROM ubuntu
+FROM ubuntu:22.04
 
 RUN apt -y update \
-	&& apt -y dist-upgrade \
-	&& apt -y autoremove \
+	&& apt -y upgrade \
 	&& apt-get -y install python3 \
 	&& apt-get -y install python3-django \
 	&& apt-get -y install python3-bs4 \
@@ -10,16 +9,22 @@ RUN apt -y update \
 	&& apt-get -y install python3-pip \
 	&& pip3 install requests \
 	&& apt-get install -y wget \
-	&& apt-get install -y curl
-	#&& apt -y install chromium-browser 
-RUN apt-get install -yqq unzip
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
-   
+	&& apt-get install -y curl \
+	&& apt-get install -y fonts-liberation libasound2 libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libcairo2 libcups2 libdrm2 libgbm1 libgtk-3-0 libgtk-4-1 libnspr4 libnss3 libpango-1.0-0 libwayland-client0 libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 libxrandr2 xdg-utils
+	
+
+RUN wget -P ~/downloads/  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+	&& dpkg -i ~/downloads/google-chrome-stable_current_amd64.deb \
+	&& wget -P ~/downloads/ https://chromedriver.storage.googleapis.com/106.0.5249.61/chromedriver_linux64.zip \
+	&& cd ~/downloads \
+	&& apt-get install unzip \
+	&& unzip chromedriver_linux64.zip
+RUN chmod +x ~/downloads/chromedriver \
+	&& mv ~/downloads/chromedriver /usr/local/share/chromedriver \
+	&& ln -fs /usr/local/share/chromedriver /usr/bin/chromedriver
+
 WORKDIR /var/www/html
 
-#COPY requirements.txt ./
-#RUN pip install -r requirements.txt
 COPY . .
 
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:80"]

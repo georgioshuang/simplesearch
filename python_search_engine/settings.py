@@ -124,6 +124,12 @@ STATICFILES_DIRS = (
 )
 STATICFILES_DIRS = [os.path.join(BASE_DIR, '/engine/static')]
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    'static',
+)
+STATICFILES_DIRS = [os.path.join(BASE_DIR, '/engine/static')]
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
