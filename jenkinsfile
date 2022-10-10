@@ -1,5 +1,4 @@
 pipeline {
-
     agent none
     environment {
         DOCKERHUB_CREDENTIALS=credentials('dockerhub')
@@ -13,18 +12,14 @@ pipeline {
         }
     }
 
-    stage('Docker hub Login') {
-        steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        }
-    }
     stage('Docker hub Push') {
-        agent any
         steps {
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u georgioshuang --password-stdin'
         sh 'docker push georgioshuang/django'
         }
     }
-    }
+
+   
     post {
         always {
             sh 'docker logout'
