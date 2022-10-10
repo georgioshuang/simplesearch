@@ -10,10 +10,10 @@ pipeline {
       	sh 'docker build -t georgioshuang/django .'
       }
     }
-    stage('Docker test') {
+    stage('Docker hub') {
     	agent any
       steps {
-      	sh 'uname -a'
+      	sh 'docker push georgioshuang/simplesearch'
       }
     }
   }
