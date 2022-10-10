@@ -16,13 +16,7 @@ pipeline {
         steps {
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u georgioshuang --password-stdin'
         sh 'docker push georgioshuang/django'
-        }
-    }
-
-   
-    post {
-        always {
-            sh 'docker logout'
+        sh 'docker logout'
         }
     }
     }
