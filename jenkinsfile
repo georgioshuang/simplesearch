@@ -13,7 +13,7 @@ pipeline {
     stage('Docker hub') {
     	agent any
       steps {
-      	sh 'docker push georgioshuang/simplesearch'
+      	sh 'docker push georgioshuang/django'
       }
     }
   }
